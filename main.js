@@ -15,6 +15,7 @@ exports.sounds.load([
 //Assign the callback function that should run
 //when the sounds have loaded
 exports.sounds.whenLoaded = setup;
+var FreqTrue = true;
 
 function setup() {
   console.log("sounds loaded");
@@ -61,8 +62,9 @@ function setup() {
       e = exports.keyboard(69),
       f = exports.keyboard(70),
       g = exports.keyboard(71),
-      h = exports.keyboard(72);
-
+      h = exports.keyboard(72),
+      p = exports.keyboard(80),
+      z = exports.keyboard(90);
   //Control the sounds based on which keys are pressed
 
   //Play the loaded shoot sound
@@ -106,6 +108,13 @@ function setup() {
   h.press = function() { 
     music.fadeIn(3);
   };
+
+  p.press = function(){
+    frequencySound()
+    console.log("frequency");
+  }
+  
+  z.press = function(){ FreqTrue = false; console.log("ola")};
 }
 
 /*
@@ -190,4 +199,36 @@ function bonusSound() {
   exports.soundEffect(880, 0, 0.2, "square", 1, 0, 0.1);
   //High D
   exports.soundEffect(1174.66, 0, 0.3, "square", 1, 0, 0.2);
+}
+
+function sleep(milliseconds) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
+}
+
+//Nossas funcoes
+function frequencySound() {
+  while(FreqTrue){
+    console.log(FreqTrue);
+    sleep(150);
+    exports.soundEffect(
+      200,          //frequency
+      0,           //attack
+      0.1,           //decay
+      "sine",  //waveform
+      0.2,           //volume
+      0,           //pan
+      0,           //wait before playing
+      0,           //pitch bend amount
+      false,       //reverse
+      0,           //random pitch range
+      0,          //dissonance
+      undefined,   //echo: [delay, feedback, filter]
+      undefined    //reverb: [duration, decay, reverse?]
+    );
+  }
+  FreqTrue = true;
 }
