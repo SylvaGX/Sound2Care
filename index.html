@@ -9,12 +9,29 @@
 <p>
 <p>
 <a>Menu:</a>
-    <ul>a - Play Sound</ul>
-    <ul>b - Left/Right Audio</ul>
-    <ul>c - Frequency Test</ul>
-    <ul>d - Audio Reverb</ul>
-    <ul>e - Hall Sound Effect</ul>
+    <button id="playGame">Play Game</button>
+    <button id="leftrightAudio">Left Right Audio</button>
+    <button id="frequencyTest">Frequency Test</button>
+    <button id="audioReverb">Audio Reverb</button>
+    <button id="hallEffect">Hall Sound Effect</button>
 
 </li>
 <script type="module" src="./main.js"></script>
+<script>
+    document.getElementById("playGame").addEventListener("click", function(){
+        window.location.href = "playGame.html"
+    });
+    document.getElementById("frequencyTest").addEventListener("click", function(){
+        window.location.href = "leftrightAudio.html"
+    });
+    document.getElementById("frequencyTest").addEventListener("click", function(){
+        window.location.href = "frequency.html"
+    });
+    document.getElementById("audioReverb").addEventListener("click", function(){
+        window.location.href = "audioreverb.html"
+    });
+    document.getElementById("hallEffect").addEventListener("click", function(){
+        window.location.href = ""
+    });
+</script>
 </body>
