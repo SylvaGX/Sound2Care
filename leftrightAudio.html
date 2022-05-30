@@ -1,0 +1,43 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Left right audio</title>
+<body>
+<h1> Test left right audio </h1>
+<br>
+<br>space - play/pause sound
+<br>
+<audio id="testAudio" hidden src="https://api.twilio.com/cowbell.mp3" type="audio/mpeg">
+</audio>
+<button id="playAudio">Play</button>
+<br>choose which sound is the high pitched one
+<br>
+<button id="leftSpeaker">Left Speaker</button>
+<button id="rightSpeaker">right Speaker</button>
+<br>
+<h4 id="result">waiting for result</h4>
+</p>
+<script type="module" src="./main.js"></script>
+<script>
+    document.getElementById("playAudio").addEventListener("click", function(){
+        var audio = document.getElementById('testAudio');
+        if(this.className == 'is-playing'){
+            this.className = "";
+            this.innerHTML = "Play"
+            audio.pause();
+        }else{
+            this.className = "is-playing";
+            this.innerHTML = "Pause";
+            audio.play();
+        }
+
+    });
+    document.getElementById("leftSpeaker").addEventListener("click", function(){
+        var result = document.getElementById('result');
+        result.innerHTML = 'ok';
+    });
+    document.getElementById("rightSpeaker").addEventListener("click", function(){
+        var result = document.getElementById('result');
+        result.innerHTML = 'no';
+    });
+</script>
+</body>
