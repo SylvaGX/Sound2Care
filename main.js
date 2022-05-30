@@ -114,10 +114,10 @@ function setup() {
     music.fadeIn(3);
   };
 
-  p.press = function(){
+  document.getElementById("playFrequency").addEventListener("click", function(){
     frequencySound()
     console.log("frequency");
-  }
+  });
   
   z.press = function(){ exports.StopFrequency(); /*if(frequencySoundVar != null){clearInterval(frequencySoundVar); frequencySoundVar=null;}*/ };
 }
