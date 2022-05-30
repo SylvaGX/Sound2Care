@@ -15,7 +15,7 @@ exports.sounds.load([
 //Assign the callback function that should run
 //when the sounds have loaded
 exports.sounds.whenLoaded = setup;
-var frequencySoundVar;
+var frequencyGenerator = 0;
 
 function setup() {
   console.log("sounds loaded");
@@ -113,9 +113,32 @@ function setup() {
   };
 
   document.getElementById("playFrequency").addEventListener("click", function(){
-    frequencySound()
-    console.log("frequency");
+    if(!frequencyGenerator){
+      frequencySound(slider.value);
+      var btn = document.getElementById("playFrequency");
+      if(btn != undefined)
+        btn.innerHTML = "STOP"; 
+      frequencyGenerator = 1;
+    }
+    else{
+      exports.StopFrequency();
+      var btn = document.getElementById("playFrequency");
+      if(btn != undefined)
+        btn.innerHTML = "PLAY";
+      frequencyGenerator = 0;
+    }
   });
+  document.getElementById("myRange").addEventListener("input", function(){
+
+    if(frequencyGenerator){
+      var slider = document.getElementById("myRange");
+      exports.StopFrequency();
+      frequencySound(slider.value);
+      console.log("frequency");
+    }
+  });
+
+  
   
   z.press = function(){ exports.StopFrequency(); /*if(frequencySoundVar != null){clearInterval(frequencySoundVar); frequencySoundVar=null;}*/ };
 }
@@ -204,9 +227,6 @@ function bonusSound() {
   exports.soundEffect(1174.66, 0, 0.3, "square", 1, 0, 0.2);
 }
 
-function frequencySound() {
-    exports.frequency(
-      800,
-      0.5
-    );
+function frequencySound(value) {
+    exports.frequency(value, 0.5);
 }
