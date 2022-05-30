@@ -85,14 +85,12 @@ function setup() {
   c.press = function() {
     music.pause();
     console.log("music paused");
-    window.location.href = "frequency.html"
   };
 
   //Restart the music 
   d.press = function() {
     music.restart();
     console.log("music restarted");
-    window.location.href = "audioreverb.html"
   };
 
   //Play the music from the 10 second mark
