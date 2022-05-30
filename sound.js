@@ -1057,6 +1057,29 @@ function keyboard(keyCode) {
 }
 //exports.keyboard = keyboard;
 
+//
+var oscillator;
+var gain;
+function frequency(frequencyValue, volumeValue){
+  if (frequencyValue === undefined) frequencyValue = 500;
+  if (volumeValue === undefined) volumeValue = 1;
+  oscillator = actx.createOscillator()
+  gain = actx.createGain()
+  oscillator.frequency.value = frequencyValue;
+  oscillator.connect(gain)
+  gain.connect(actx.destination)
+  gain.gain.value = volumeValue;
+  oscillator.start(actx.currentTime)
+}
+
+function StopFrequency(){
+  gain.gain.exponentialRampToValueAtTime(
+    0.00001, actx.currentTime + 0.04
+  )
+  oscillator.stop(actx.currentTime + 4);
+}
+
+
 
   return{
     actx: actx,
@@ -1066,7 +1089,11 @@ function keyboard(keyCode) {
     decodeAudio: decodeAudio,
     soundEffect: soundEffect,
     impulseResponse: impulseResponse,
-    keyboard: keyboard
+    keyboard: keyboard,
+    frequency: frequency,
+    StopFrequency: StopFrequency,
   };
 
 })();
+
+

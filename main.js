@@ -15,7 +15,7 @@ exports.sounds.load([
 //Assign the callback function that should run
 //when the sounds have loaded
 exports.sounds.whenLoaded = setup;
-var FreqTrue = true;
+var frequencySoundVar;
 
 function setup() {
   console.log("sounds loaded");
@@ -53,6 +53,9 @@ function setup() {
   
   //Optionally set the music playback rate to half speed
   //music.playbackRate = 0.5;
+
+
+//Nossas funcoes
 
   //Capture the keyboard events
   var a = exports.keyboard(65),
@@ -114,7 +117,7 @@ function setup() {
     console.log("frequency");
   }
   
-  z.press = function(){ FreqTrue = false; console.log("ola")};
+  z.press = function(){ exports.StopFrequency(); /*if(frequencySoundVar != null){clearInterval(frequencySoundVar); frequencySoundVar=null;}*/ };
 }
 
 /*
@@ -201,34 +204,9 @@ function bonusSound() {
   exports.soundEffect(1174.66, 0, 0.3, "square", 1, 0, 0.2);
 }
 
-function sleep(milliseconds) {
-  const date = Date.now();
-  let currentDate = null;
-  do {
-    currentDate = Date.now();
-  } while (currentDate - date < milliseconds);
-}
-
-//Nossas funcoes
 function frequencySound() {
-  while(FreqTrue){
-    console.log(FreqTrue);
-    sleep(150);
-    exports.soundEffect(
-      200,          //frequency
-      0,           //attack
-      0.1,           //decay
-      "sine",  //waveform
-      0.2,           //volume
-      0,           //pan
-      0,           //wait before playing
-      0,           //pitch bend amount
-      false,       //reverse
-      0,           //random pitch range
-      0,          //dissonance
-      undefined,   //echo: [delay, feedback, filter]
-      undefined    //reverb: [duration, decay, reverse?]
+    exports.frequency(
+      800,
+      0.5
     );
-  }
-  FreqTrue = true;
 }
