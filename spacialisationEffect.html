@@ -573,8 +573,9 @@
 			<span id="rup-label">Rotate upwards</span>
 		</button>
 	</section>
-
+    <button id="back">Back</button>
 </div>
+
 
 <script type="text/javascript">
 
@@ -870,6 +871,9 @@ playButton.addEventListener('click', function() {
 
 }, false);
 
+    document.getElementById("back").addEventListener("click", function(){
+        window.location.href = "index.html"
+    });
 </script>
 
 </body>

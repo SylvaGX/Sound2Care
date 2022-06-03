@@ -102,7 +102,11 @@ may be helpful to maximize the value of Wet.
   <input type="range" class="form-range" value="1" min=".0001" max="10" step=".0005" id="q" title="1" />
   </div>
   </div>
+  <hr />
+  <button class="btn btn-primary" id="back">Back</button>
 </div>
+
+
 
 <script src="./reverb.umd.js"></script>
 <script>
@@ -238,5 +242,8 @@ may be helpful to maximize the value of Wet.
       document.getElementById('play').disabled = '';
     });  
 
+    document.getElementById("back").addEventListener("click", function(){
+        window.location.href = "index.html"
+    });
 </script>
 </body>

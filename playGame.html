@@ -16,6 +16,7 @@
 <br>
 <h4 id="result"></h4>
 </p>
+<button id="back">Back</button>
 
 <script type="module">
     import {exports} from './sound.js'; 
@@ -69,6 +70,10 @@
     document.getElementById("sound2").addEventListener("click", function(){
         var result = document.getElementById('result');
         result.innerHTML = 'Correct! Good Job';
+    });
+
+    document.getElementById("back").addEventListener("click", function(){
+        window.location.href = "index.html"
     });
 </script>
 </body>
