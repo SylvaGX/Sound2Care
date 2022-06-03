@@ -15,7 +15,6 @@ exports.sounds.load([
 //Assign the callback function that should run
 //when the sounds have loaded
 exports.sounds.whenLoaded = setup;
-var frequencyGenerator = 0;
 
 function setup() {
   console.log("sounds loaded");
@@ -112,31 +111,7 @@ function setup() {
     music.fadeIn(3);
   };
 
-  document.getElementById("playFrequency").addEventListener("click", function(){
-    if(!frequencyGenerator){
-      frequencySound(slider.value);
-      var btn = document.getElementById("playFrequency");
-      if(btn != undefined)
-        btn.innerHTML = "STOP"; 
-      frequencyGenerator = 1;
-    }
-    else{
-      exports.StopFrequency();
-      var btn = document.getElementById("playFrequency");
-      if(btn != undefined)
-        btn.innerHTML = "PLAY";
-      frequencyGenerator = 0;
-    }
-  });
-  document.getElementById("myRange").addEventListener("input", function(){
 
-    if(frequencyGenerator){
-      var slider = document.getElementById("myRange");
-      exports.StopFrequency();
-      frequencySound(slider.value);
-      console.log("frequency");
-    }
-  });
 
   
   
@@ -227,24 +202,4 @@ function bonusSound() {
   exports.soundEffect(1174.66, 0, 0.3, "square", 1, 0, 0.2);
 }
 
-function frequencySound(value) {
-    exports.frequency(value, 0.5);
-}
 
-function reverbSound(value){
-  exports.soundEffect(
-    16,          //frequency
-    0,           //attack
-    1,           //decay
-    "sawtooth",  //waveform
-    1,           //volume
-    0,           //pan
-    0,           //wait before playing
-    0,           //pitch bend amount
-    false,       //reverse
-    0,           //random pitch range
-    50,          //dissonance
-    undefined,   //echo: [delay, feedback, filter]
-    value    //reverb: [duration, decay, reverse?]
-  )
-}

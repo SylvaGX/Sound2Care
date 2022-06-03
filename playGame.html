@@ -4,41 +4,71 @@
 <body>
 <h1> Higher or Lower Game</h1>
 <br>
-<br>space - play/pause sound
-<br>
-<audio id="testAudio" hidden src="https://api.twilio.com/cowbell.mp3" type="audio/mpeg">
-</audio>
-<button id="playAudio">Play</button>
 <br>PT - Neste jogo é suposto advinhares qual dos 2 sons dá mais alto. Ou seja escolher o som mais agudo
 <br>En - In this game you are supposed to guess which of the 2 sounds is louder. Choose the sound with higher pitch
 <br>
+<br>space - play/pause sound
+<br>
+<button id="testAudio">Play</button>
+<p>
 <button id="sound1">Sound 1</button>
 <button id="sound2">Sound 2</button>
 <br>
-<h4 id="result">waiting for result</h4>
+<h4 id="result"></h4>
 </p>
-<script type="module" src="./main.js"></script>
-<script>
-    document.getElementById("playAudio").addEventListener("click", function(){
-        var audio = document.getElementById('testAudio');
-        if(this.className == 'is-playing'){
-            this.className = "";
-            this.innerHTML = "Play"
-            audio.pause();
-        }else{
-            this.className = "is-playing";
-            this.innerHTML = "Pause";
-            audio.play();
+
+<script type="module">
+    import {exports} from './sound.js'; 
+    function PlayGame1(){
+    exports.soundEffect(
+        400,          //frequency
+        0,           //attack
+        1.5,           //decay
+        "sine",       //waveform
+        0.3,           //volume
+        0,           //pan
+        0,           //wait before playing
+        0,           //pitch bend amount
+        false,       //reverse
+        0,           //random pitch range
+        50,          //dissonance
+        undefined,   //echo: [delay, feedback, filter]
+        undefined    //reverb: [duration, decay, reverse?]
+    );
+}
+
+
+    function PlayGame2(){
+    exports.soundEffect(
+        800,          //frequency
+        0,           //attack
+        1.5,           //decay
+        "sine",       //waveform
+        0.3,           //volume
+        0,           //pan
+        3,           //wait before playing
+        0,           //pitch bend amount
+        false,       //reverse
+        0,           //random pitch range
+        50,          //dissonance
+        undefined,   //echo: [delay, feedback, filter]
+        undefined    //reverb: [duration, decay, reverse?]
+    );
+}
+
+    document.getElementById("testAudio").addEventListener("click", function(){
+            PlayGame1()
+            PlayGame2()
         }
 
-    });
+    );
     document.getElementById("sound1").addEventListener("click", function(){
         var result = document.getElementById('result');
-        result.innerHTML = 'ok';
+        result.innerHTML = 'Wrong Try Again';
     });
     document.getElementById("sound2").addEventListener("click", function(){
         var result = document.getElementById('result');
-        result.innerHTML = 'no';
+        result.innerHTML = 'Correct! Good Job';
     });
 </script>
 </body>

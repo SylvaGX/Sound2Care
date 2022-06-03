@@ -47,8 +47,9 @@
 </head>
 <body>
 <h1 style="text-align: center">Frequency Test </h1>
+<br>PT - Neste jogo deve mover o slider para ir vendo se consegue ouvir todas as frequências
+<br>EN - In this game you should move the slider, to check if you can hear all frequencies
 <p style="text-align: center">Slider</p>
-
 <div class="slidecontainer">
   <input type="range" min="20" max="10000" value="20" class="slider" id="myRange"/>
 </div>
@@ -56,15 +57,47 @@
 <div class="button">
   <button id="playFrequency">Play</button>
 </div>
-<script type="module" src="./main.js"></script>
-<script> 
+
+<script type="module" >
+  import {exports} from './sound.js';  
   var slider = document.getElementById("myRange");
   var output = document.getElementById("demo");
+  var frequencyGenerator = 0;
   output.innerHTML = slider.value; // Display the default slider value
 
   // Update the current slider value (each time you drag the slider handle)
   slider.oninput = function() {
     output.innerHTML = this.value;
   }
+
+  function frequencySound(value) {
+    exports.frequency(value, 0.5);
+  }
+
+  document.getElementById("playFrequency").addEventListener("click", function(){
+    if(!frequencyGenerator){
+      frequencySound(slider.value);
+      var btn = document.getElementById("playFrequency");
+      if(btn != undefined)
+        btn.innerHTML = "STOP"; 
+      frequencyGenerator = 1;
+    }
+    else{
+      exports.StopFrequency();
+      var btn = document.getElementById("playFrequency");
+      if(btn != undefined)
+        btn.innerHTML = "PLAY";
+      frequencyGenerator = 0;
+    }
+  });
+  document.getElementById("myRange").addEventListener("input", function(){
+
+    if(frequencyGenerator){
+      var slider = document.getElementById("myRange");
+      exports.StopFrequency();
+      frequencySound(slider.value);
+      console.log("frequency");
+    }
+  });
   </script>
 </body>
