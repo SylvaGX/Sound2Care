@@ -50,6 +50,8 @@
 <body>
 <h1 style="text-align: center"> Audio Reverb </h1>
 
+<audio src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/858/outfoxing.mp3" crossorigin="anonymous" ></audio>
+
 <div class="slidecontainer">
   <input type="range" min="0" max="100" value="0" class="slider" id="myRange"/>
 </div>
@@ -57,7 +59,22 @@
 <div class="button">
 <button id="playReverb" >Play</button>
 </div>
-<script> 
+
+<script src="./reverb.umd.js"></script>
+<script>
+
+  // const reverb = new Reverb(ctx, {
+  //   noise: 0, // Inpulse Response Noise algorithm (0: White noise, 1: Pink noise, 2: Brown noise)
+  //   decay: 5, // Amount of IR (Inpulse Response) decay. 0~100
+  //   delay: 0, // Delay time o IR. (NOT delay effect) 0~100 [sec]
+  //   filterFreq: 2200, // Filter frequency. 20~5000 [Hz]
+  //   filterQ: 1, // Filter quality. 0~10
+  //   filterType: 'lowpass', // Filter type. 'bandpass' etc. See https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode/type .
+  //   mix: 0.5, // Dry (Original Sound) and Wet (Effected sound) raito. 0~1
+  //   reverse: false, // Reverse IR.
+  //   time: 3, // Time length of IR. 0~50 [sec]
+  // });
+
   var slider = document.getElementById("myRange");
   var output = document.getElementById("demo");
   output.innerHTML = slider.value; // Display the default slider value
@@ -66,5 +83,35 @@
   slider.oninput = function() {
     output.innerHTML = this.value;
   }
-  </script>
+  // Setup Audio Context
+  const AudioCtx = new AudioContext();
+
+  // Setup Reverb Class
+  const reverb = new Reverb(AudioCtx, {
+    noise: 2, // Inpulse Response Noise algorithm (0: White noise, 1: Pink noise, 2: Brown noise)
+    decay: 100, // Amount of IR (Inpulse Response) decay. 0~100
+    delay: 0, // Delay time o IR. (NOT delay effect) 0~100 [sec]
+    filterFreq: 5000, // Filter frequency. 20~5000 [Hz]
+    filterQ: 10, // Filter quality. 0~10
+    filterType: 'lowpass', // Filter type. 'bandpass' etc. See https://developer.mozilla.org/en-US/docs/Web/API/BiquadFilterNode/type .
+    mix: 0.5, // Dry (Original Sound) and Wet (Effected sound) raito. 0~1
+    reverse: false, // Reverse IR.
+    time: 3, // Time length of IR. 0~50 [sec]
+  });
+  console.info(
+    'Reverb.js loaded. (version:' +
+    reverb.version +
+    ' / build: ' +
+    reverb.build +
+    ')'
+  );
+  const audioElement = document.querySelector('audio');
+  const track = AudioCtx.createMediaElementSource(audioElement);
+  // Connect Reverb
+  reverb.connect(track);
+  track.connect(AudioCtx.destination);
+
+  // fire
+  audioElement.play();
+</script>
 </body>
