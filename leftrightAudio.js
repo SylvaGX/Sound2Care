@@ -73,3 +73,7 @@ powerButton.addEventListener('click', function() {
 	this.setAttribute( "aria-checked", state ? "false" : "true" );
 	console.log(audioCtx.state);
 }, false);
+
+document.getElementById("back").addEventListener("click", function(){
+	window.location.href = "index.html"
+});

@@ -57,6 +57,7 @@
 <div class="button">
   <button id="playFrequency">Play</button>
 </div>
+<button id="back">Back</button>
 
 <script type="module" >
   import {exports} from './sound.js';  
@@ -99,5 +100,9 @@
       console.log("frequency");
     }
   });
+
+  document.getElementById("back").addEventListener("click", function(){
+        window.location.href = "index.html"
+    });
   </script>
 </body>
