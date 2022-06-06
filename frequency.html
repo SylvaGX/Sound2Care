@@ -49,9 +49,9 @@
 <h1 style="text-align: center">Frequency Test </h1>
 <br>PT - Neste jogo deve mover o slider para ir vendo se consegue ouvir todas as frequências
 <br>EN - In this game you should move the slider, to check if you can hear all frequencies
-<p style="text-align: center">Slider</p>
+<p style="text-align: center"></p>
 <div class="slidecontainer">
-  <input type="range" min="20" max="10000" value="20" class="slider" id="myRange"/>
+  <input type="range" min="20" max="10000" step="0.001" value="391.995" class="slider" id="myRange"/>
 </div>
 <p style="text-align: center">Value: <span id="demo"></span></p>
 <div class="button">
@@ -60,7 +60,7 @@
 <button id="back">Back</button>
 
 <script type="module" >
-  import {exports} from './sound.js';  
+  import {exports} from './sound.js';
   var slider = document.getElementById("myRange");
   var output = document.getElementById("demo");
   var frequencyGenerator = 0;
@@ -68,7 +68,7 @@
 
   // Update the current slider value (each time you drag the slider handle)
   slider.oninput = function() {
-    output.innerHTML = this.value;
+    output.innerHTML = Math.round(this.value);
   }
 
   function frequencySound(value) {

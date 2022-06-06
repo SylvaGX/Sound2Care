@@ -23,83 +23,26 @@ Changing these values will regenerate the impulse response each time,
 but due to its nature, it will take some time to see the effect. It
 may be helpful to maximize the value of Wet.
 </p>
-<div class="form-check form-switch">
-  <input id="reverb" type="checkbox" class="form-check-input" />
-  <label class="form-check-label" for="reverb">Reverb</label>
-  </div>
-  <div>
-  Impulse Response Noise algorithm:
-  <div class="form-check form-check-inline">
-  <input class="form-check-input" type="radio" name="noise" id="white" value="0" checked />
-  <label class="form-check-label" for="white">White Noise</label>
-  </div>
-  <div class="form-check form-check-inline">
-  <input class="form-check-input" type="radio" name="noise" id="pink" value="1" />
-  <label class="form-check-label" for="pink">Pink Noise</label>
-  </div>
-  <div class="form-check form-check-inline">
-  <input class="form-check-input" type="radio" name="noise" id="brown" value="2" />
-  <label class="form-check-label" for="brown">Brown Noise</label>
-  </div>
-  </div>
-  <div class="form-check form-switch">
-  <input type="checkbox" class="form-check-input" id="reverse" />
-  <label class="form-check-label" for="reverse">Reverse Inpulse Response</label>
-  </div>
   <hr />
   <div class="row">
   <div class="col-md">
   <label for="time" class="form-label" aria-describedby="time-help">Time</label>
-  <input type="range" class="form-range" title="1.1" value="2" min="0" max="50" id="time" />
+  <input type="range" class="form-range" value="2" min="0.01" max="3" step="0.01" id="time" />
   <div id="time-help" class="form-text">Room size</div>
   </div>
   <div class="col-md">
   <label for="decay" class="form-label">Decay</label>
-  <input type="range" class="form-range" title="2" value="2" min="0" max="100" id="decay" />
+  <input type="range" class="form-range" value="0.01" min="0.01" max="3" step="0.01" id="decay" />
   <div id="decay-help" class="form-text">
   Hardness of room wall size
   </div>
   </div>
   <div class="col-md">
-  <label for="delay" class="form-label">Delay</label>
-  <input type="range" class="form-range" title="0" value="0" min="0" max="100" id="delay" />
-  <div id="delay-help" class="form-text">
-  Delays due to obstacles in front of room walls
-  </div>
-  </div>
-  <div class="col-md">
-  <label for="mix" class="form-label">Dry / Wet</label>
-  <input type="range" id="mix" class="form-range" min="0" max="1" step="0.05" value="0.5" title="0.5" />
+  <label for="mix" class="form-label">Mix</label>
+  <input type="range" id="mix" class="form-range" min="0" max="1" step="0.01" value="0.5" />
   <div id="delay-help" class="form-text">
   Closer to the original sound or closer to the effector
   </div>
-  </div>
-  </div>
-  <h2>Filter for IR</h2>
-  <p>
-  If the value of the filter is allpass, the filtering will be bypassed.
-  </p>
-  <div class="row">
-  <div class="col-md">
-  <label for="filter" class="form-label">Filter Type</label>
-  <select id="filter" class="form-select">
-  <option value="lowpass" selected="selected">lowpass (Default)</option>
-  <option value="highpass">highpass</option>
-  <option value="bandpass">bandpass</option>
-  <option value="lowshelf">lowshelf</option>
-  <option value="highshelf">highshelf</option>
-  <option value="peaking">peaking</option>
-  <option value="notch">notch</option>
-  <option value="allpass">allpass (Through)</option>
-  </select>
-  </div>
-  <div class="col-md">
-  <label for="freq" class="form-label">Filter frequency</label>
-  <input type="range" class="form-range" value="2500" min="20" max="5000" step="5" id="freq" title="2500" />
-  </div>
-  <div class="col-md">
-  <label for="freq" class="form-label">Quality (Q) value</label>
-  <input type="range" class="form-range" value="1" min=".0001" max="10" step=".0005" id="q" title="1" />
   </div>
   </div>
   <hr />
@@ -108,59 +51,24 @@ may be helpful to maximize the value of Wet.
 
 
 
-<script src="./reverb.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pizzicato/0.6.1/Pizzicato.min.js"></script>
 <script>
-  // Setup Audio Context
-  const AudioCtx = new AudioContext();
-
-  // Setup Reverb Class
-  const reverb = new Reverb(AudioCtx);
-  console.info(
-    'Reverb.js loaded. (version:' +
-    reverb.version +
-    ' / build: ' +
-    reverb.build +
-    ')'
-  );
-
-  const AudioSrc = AudioCtx.createBufferSource();
-
-  // Load audio file
-
-  // Load audio file and decode asyncly.
-  const LoadSample = async url => {
-      return new Promise(resolve => {
-        fetch(url)
-          .then(response => response.arrayBuffer())
-          .then(arraybuf =>
-            AudioCtx.decodeAudioData(
-              arraybuf,
-              buffer => {
-                resolve(buffer);
-              },
-              e => alert(e)
-            )
-          )
-          .catch(e => alert(e));
-      });
-    };
-
-  // Reverb switch handler
-  const setReverb = () => {
-    AudioSrc.disconnect();
-
-    if (document.getElementById('reverb').checked) {
-      // Connect Reverb
-      reverb.connect(AudioSrc);
-    } else {
-      reverb.disconnect(AudioSrc);
-    }
-    AudioSrc.connect(AudioCtx.destination);
-  };
-
+  var isPlay = false; 
   window.addEventListener('load', async () => {
-      const sound = await LoadSample('./sounds/music.wav');
+    var reverb = new Pizzicato.Effects.Reverb({
+      time: document.getElementById('play').value,
+      decay: document.getElementById('decay').value,
+      reverse: false,
+      mix: document.getElementById('mix').value
+    });
+    var acousticGuitar = new Pizzicato.Sound('./sounds/music.wav', function() {
+      // Sound loaded!
+      
+      acousticGuitar.addEffect(reverb);
+      acousticGuitar.loop = true;
+    });
 
+      document.getElementById('play').removeAttribute("disabled");
       // Play button
       document.getElementById('play').addEventListener(
         'click',
@@ -168,78 +76,38 @@ may be helpful to maximize the value of Wet.
           if (event.target != event.currentTarget)
             return;
 
-          if (AudioSrc.buffer == null) {
-            AudioSrc.buffer = sound;
-            AudioSrc.loop = true;
-
-            setReverb();
-            AudioSrc.start();
+          if(!isPlay){
+            acousticGuitar.play();
+            document.getElementById('play').innerHTML = "<em class=\"bi bi-stop\"></em> Stop";
+            isPlay = !isPlay;
           }
-
-          if (AudioCtx.state === 'running') {
-            AudioCtx.suspend().then(() => {
-
-              event.target.innerHTML = '<em class="bi bi-play"></em> Play';
-            });
-          } else if (AudioCtx.state === 'suspended') {
-            AudioCtx.resume().then(() => {
-              event.target.innerHTML = '<em class="bi bi-pause"></em> Pause';
-            });
+          else{
+            acousticGuitar.stop(); 
+            document.getElementById('play').innerHTML = "<em class=\"bi bi-play\"></em> Play";
+            isPlay = !isPlay;
           }
         },
         false
       );
 
-      // Reverb switch button
-      document.getElementById('reverb').addEventListener('click', setReverb);
-      // Reverse checkbox
-      document
-        .getElementById('reverse')
-        .addEventListener('click', e => reverb.reverse(e.target.checked));
       // Reverb dualation time
       document.getElementById('time').addEventListener('change', e => {
-        reverb.time(e.target.value);
-        e.target.title = e.target.value;
+        console.log(e.target.value);
+        e.target.value = e.target.value;
+        reverb.time = Math.round(e.target.value);
       });
       // Decay time
       document.getElementById('decay').addEventListener('change', e => {
-        reverb.decay(e.target.value);
-        e.target.title = e.target.value;
-      });
-      // Delay time
-      document.getElementById('delay').addEventListener('change', e => {
-        reverb.delay(e.target.value);
-        e.target.title = e.target.value;
+        console.log(e.target.value);
+        e.target.value = e.target.value;
+        reverb.decay = Math.round(e.target.value);
       });
       // Filter select box
-      document.getElementById('filter').addEventListener('change', e => {
-        reverb.filterType(e.target.value);
-        e.target.title = e.target.value;
-      });
-      // Filter frequency
-      document.getElementById('freq').addEventListener('change', e => {
-        reverb.filterFreq(e.target.value);
-        e.target.title = e.target.value;
-      });
-      // Filter quality
-      document.getElementById('q').addEventListener('change', e => {
-        reverb.filterQ(e.target.value);
-        e.target.title = e.target.value;
-      });
-      // Dry/Wet
       document.getElementById('mix').addEventListener('change', e => {
-        reverb.mix(e.target.value);
-        e.target.title = e.target.value;
+        console.log(e.target.value);
+        e.target.value = e.target.value;
+        reverb.mix = Math.round(e.target.value);
       });
-      // Noise Type
-      document
-        .querySelectorAll('[name=noise]')
-        .forEach(dom =>
-          dom.addEventListener('click', e => reverb.setNoise(e.target.value))
-        );
-
-      // remove disabled
-      document.getElementById('play').disabled = '';
     });  
 
     document.getElementById("back").addEventListener("click", function(){
