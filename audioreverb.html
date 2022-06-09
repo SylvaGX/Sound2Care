@@ -27,7 +27,7 @@ may be helpful to maximize the value of Wet.
   <div class="row">
   <div class="col-md">
   <label for="time" class="form-label" aria-describedby="time-help">Time</label>
-  <input type="range" class="form-range" value="2" min="0.01" max="3" step="0.01" id="time" />
+  <input type="range" class="form-range" value="1" min="0.01" max="3" step="0.01" id="time" />
   <div id="time-help" class="form-text">Room size</div>
   </div>
   <div class="col-md">
@@ -56,33 +56,34 @@ may be helpful to maximize the value of Wet.
   var isPlay = false; 
   window.addEventListener('load', async () => {
     var reverb = new Pizzicato.Effects.Reverb({
-      time: document.getElementById('play').value,
-      decay: document.getElementById('decay').value,
+      time: 1,
+      decay: 0.01,
       reverse: false,
-      mix: document.getElementById('mix').value
+      mix: 0.5
     });
-    var acousticGuitar = new Pizzicato.Sound('./sounds/music.wav', function() {
+    var acousticGuitar = new Pizzicato.Sound('./sounds/music.mp3', function() {
       // Sound loaded!
-      
-      acousticGuitar.addEffect(reverb);
       acousticGuitar.loop = true;
     });
 
-      document.getElementById('play').removeAttribute("disabled");
+    var group = new Pizzicato.Group([acousticGuitar]);
+    group.addEffect(reverb);
+
+    document.getElementById('play').removeAttribute("disabled");
       // Play button
-      document.getElementById('play').addEventListener(
+    document.getElementById('play').addEventListener(
         'click',
         event => {
           if (event.target != event.currentTarget)
             return;
 
           if(!isPlay){
-            acousticGuitar.play();
+            group.play();
             document.getElementById('play').innerHTML = "<em class=\"bi bi-stop\"></em> Stop";
             isPlay = !isPlay;
           }
           else{
-            acousticGuitar.stop(); 
+            group.stop(); 
             document.getElementById('play').innerHTML = "<em class=\"bi bi-play\"></em> Play";
             isPlay = !isPlay;
           }
@@ -92,21 +93,21 @@ may be helpful to maximize the value of Wet.
 
       // Reverb dualation time
       document.getElementById('time').addEventListener('change', e => {
-        console.log(e.target.value);
-        e.target.value = e.target.value;
-        reverb.time = Math.round(e.target.value);
+        group.removeEffect(reverb);
+        reverb.time = parseFloat(e.target.value);
+        group.addEffect(reverb);
       });
       // Decay time
       document.getElementById('decay').addEventListener('change', e => {
-        console.log(e.target.value);
-        e.target.value = e.target.value;
-        reverb.decay = Math.round(e.target.value);
+        group.removeEffect(reverb);
+        reverb.decay = parseFloat(e.target.value);
+        group.addEffect(reverb);
       });
       // Filter select box
       document.getElementById('mix').addEventListener('change', e => {
-        console.log(e.target.value);
-        e.target.value = e.target.value;
-        reverb.mix = Math.round(e.target.value);
+        group.removeEffect(reverb);
+        reverb.mix = parseFloat(e.target.value);
+        group.addEffect(reverb);
       });
     });  
 
