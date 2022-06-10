@@ -4,7 +4,7 @@ const port = 3000
 
 app.use(express.static('/public'));
 
-app.get('/sounds/music.wav', function(req, res) {
+app.get('/sounds/music.mp3', function(req, res) {
   res.sendFile(__dirname + '/sounds/music.wav');
 });
 

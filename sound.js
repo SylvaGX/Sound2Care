@@ -1072,6 +1072,10 @@ function frequency(frequencyValue, volumeValue){
   oscillator.start(actx.currentTime)
 }
 
+function ChangeFrequency(frequencyValue){
+  oscillator.frequency.value = frequencyValue;
+}
+
 function StopFrequency(){
   gain.gain.exponentialRampToValueAtTime(
     0.00001, actx.currentTime + 0.04
@@ -1092,6 +1096,7 @@ function StopFrequency(){
     keyboard: keyboard,
     frequency: frequency,
     StopFrequency: StopFrequency,
+    ChangeFrequency : ChangeFrequency,
   };
 
 })();

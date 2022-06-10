@@ -7,112 +7,121 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css" integrity="sha256-rzXMaro05QBd53CZ36ctTBp3FdKN3Ow0P0gDHcjLCLw=" crossorigin="anonymous">
 </head>
 <body>
-<div class="container">
- <h1 style="text-align:center"><a style=" color:black ;text-decoration: none" href="audioreverb.html">Audio Reverb</h1>
-<br>Pt - Altere os valores para ver como funciona o reverb
-<br>EN - Change the values to see how reverb works
-<br>
-<button id="play" class="btn btn-primary" disabled>
-  <em class="bi bi-play"></em> Play
-</button>
-<hr />
-<h2>Reverb Control</h2> 
-<p>
-Changing these values will regenerate the impulse response each time,
-but due to its nature, it will take some time to see the effect. It
-may be helpful to maximize the value of Wet.
-</p>
-  <hr />
-  <div class="row">
-  <div class="col-md">
-  <label for="time" class="form-label" aria-describedby="time-help">Time</label>
-  <input type="range" class="form-range" value="1" min="0.01" max="3" step="0.01" id="time" />
-  <div id="time-help" class="form-text">Room size</div>
+  <div class="container">
+    <div class="row" style="margin: 0px 0px 20px 0px;">
+      <h1 style="text-align:center"><a style=" color:black ;text-decoration: none" href="audioreverb.html">Audio Reverb</a></h1>
+    </div>
+    <div class="row" style="margin: 0px 0px 10px 0px;">
+      <div class="col-md" style="text-align: center">
+        Pt - Altere os valores para ver como funciona o reverb
+      </div>
+    </div>
+    <div class="row" style="margin: 0px 0px 20px 0px;">
+      <div class="col-md" style="text-align: center;">
+        EN - Change the values to see how reverb works
+      </div>
+    </div>
+    <div class="row" style="margin: 0px 0px 40px 0px;">
+      <div class="col-md" style="text-align: center">
+        <h2>Reverb Control</h2>
+        Changing these values will regenerate the impulse response each time,
+        but due to its nature, it will take some time to see the effect.
+      </div>
+    </div>
+    <div class="row" style="margin: 0px 0px 20px 0px;">
+      <div class="col-md">
+        <button id="play" class="btn btn-primary" disabled>
+          <em class="bi bi-play"></em> Play
+        </button>
+      </div>
+    </div>
+    <div class="row" style="margin: 0px 0px 20px 0px;">
+      <div class="col-md">
+        <label for="time" class="form-label" aria-describedby="time-help">Time</label>
+        <input type="range" class="form-range" value="1" min="0.01" max="3" step="0.01" id="time" />
+        <div id="time-help" class="form-text">Room size</div>
+      </div>
+      <div class="col-md" style="margin: 0px 0px 20px 0px;">
+        <label for="decay" class="form-label">Decay</label>
+        <input type="range" class="form-range" value="0.01" min="0.01" max="3" step="0.01" id="decay" />
+        <div id="decay-help" class="form-text">
+          Hardness of room wall size
+        </div>
+      </div>
+      <div class="col-md">
+        <label for="mix" class="form-label">Mix</label>
+        <input type="range" id="mix" class="form-range" min="0" max="1" step="0.01" value="0.5" />
+        <div id="mix-help" class="form-text">
+          Closer to the original sound or closer to the effector
+        </div>
+      </div>
+    </div>
+    <div class="row" style="margin: 0px 0px 0px 0px;">
+      <div class="col-md">
+        <a class="btn btn-primary" href="index.html">Back</a>
+      </div>
+    </div>
   </div>
-  <div class="col-md">
-  <label for="decay" class="form-label">Decay</label>
-  <input type="range" class="form-range" value="0.01" min="0.01" max="3" step="0.01" id="decay" />
-  <div id="decay-help" class="form-text">
-  Hardness of room wall size
-  </div>
-  </div>
-  <div class="col-md">
-  <label for="mix" class="form-label">Mix</label>
-  <input type="range" id="mix" class="form-range" min="0" max="1" step="0.01" value="0.5" />
-  <div id="mix-help" class="form-text">
-  Closer to the original sound or closer to the effector
-  </div>
-  </div>
-  </div>
-  <hr />
-  <button class="btn btn-primary" id="back">Back</button>
-</div>
 
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pizzicato/0.6.1/Pizzicato.min.js"></script>
-<script>
-  var isPlay = false; 
-  window.addEventListener('load', async () => {
-    var reverb = new Pizzicato.Effects.Reverb({
-      time: 1,
-      decay: 0.01,
-      reverse: false,
-      mix: 0.5
-    });
-    var acousticGuitar = new Pizzicato.Sound('./sounds/music.mp3', function() {
-      // Sound loaded!
-      acousticGuitar.loop = true;
-    });
-
-    var group = new Pizzicato.Group([acousticGuitar]);
-    group.addEffect(reverb);
-
-    document.getElementById('play').removeAttribute("disabled");
-      // Play button
-    document.getElementById('play').addEventListener(
-        'click',
-        event => {
-          if (event.target != event.currentTarget)
-            return;
-
-          if(!isPlay){
-            group.play();
-            document.getElementById('play').innerHTML = "<em class=\"bi bi-stop\"></em> Stop";
-            isPlay = !isPlay;
-          }
-          else{
-            group.stop(); 
-            document.getElementById('play').innerHTML = "<em class=\"bi bi-play\"></em> Play";
-            isPlay = !isPlay;
-          }
-        },
-        false
-      );
-
-      // Reverb dualation time
-      document.getElementById('time').addEventListener('change', e => {
-        group.removeEffect(reverb);
-        reverb.time = parseFloat(e.target.value);
-        group.addEffect(reverb);
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzicato/0.6.1/Pizzicato.min.js"></script>
+  <script>
+    var isPlay = false; 
+    window.addEventListener('load', () => {
+      var reverb = new Pizzicato.Effects.Reverb({
+        time: 1,
+        decay: 0.01,
+        reverse: false,
+        mix: 0.5
       });
-      // Decay time
-      document.getElementById('decay').addEventListener('change', e => {
-        group.removeEffect(reverb);
-        reverb.decay = parseFloat(e.target.value);
-        group.addEffect(reverb);
+      var acousticGuitar = new Pizzicato.Sound('./sounds/music.mp3', function() {
+        // Sound loaded!
+        acousticGuitar.loop = true;
       });
-      // Filter select box
-      document.getElementById('mix').addEventListener('change', e => {
-        group.removeEffect(reverb);
-        reverb.mix = parseFloat(e.target.value);
-        group.addEffect(reverb);
-      });
-    });  
 
-    document.getElementById("back").addEventListener("click", function(){
-        window.location.href = "index.html"
-    });
-</script>
+      var group = new Pizzicato.Group([acousticGuitar]);
+      group.addEffect(reverb);
+
+      document.getElementById('play').removeAttribute("disabled");
+        // Play button
+      document.getElementById('play').addEventListener(
+          'click',
+          event => {
+            if (event.target != event.currentTarget)
+              return;
+
+            if(!isPlay){
+              group.play();
+              document.getElementById('play').innerHTML = "<em class=\"bi bi-stop\"></em> Stop";
+              isPlay = !isPlay;
+            }
+            else{
+              group.stop(); 
+              document.getElementById('play').innerHTML = "<em class=\"bi bi-play\"></em> Play";
+              isPlay = !isPlay;
+            }
+          },
+          false
+        );
+
+        // Reverb dualation time
+        document.getElementById('time').addEventListener('change', e => {
+          group.removeEffect(reverb);
+          reverb.time = parseFloat(e.target.value);
+          group.addEffect(reverb);
+        });
+        // Decay time
+        document.getElementById('decay').addEventListener('change', e => {
+          group.removeEffect(reverb);
+          reverb.decay = parseFloat(e.target.value);
+          group.addEffect(reverb);
+        });
+        // Filter select box
+        document.getElementById('mix').addEventListener('change', e => {
+          group.removeEffect(reverb);
+          reverb.mix = parseFloat(e.target.value);
+          group.addEffect(reverb);
+        });
+      });
+  </script>
 </body>
 </html>
